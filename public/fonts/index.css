@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'Oxanium';
+    src: url('Oxanium-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Oxanium Bold';
+    src: url('Oxanium-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Oxanium Bolder';
+    src: url('Oxanium-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: 'Oxanium Lighter';
+    src: url('Oxanium-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'Oxanium Light';
+    src: url('Oxanium-Light.ttf');
+}
