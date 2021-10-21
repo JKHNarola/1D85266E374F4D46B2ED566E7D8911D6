@@ -87,8 +87,8 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   cursor: pointer;
 }
 
-.block.animate {
-  transition: all 0.1s;
+.game-plot.shuffled .block {
+  transition: all 100ms;
 }
 
 .blank {
@@ -123,4 +123,13 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   color: aliceblue;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.shuffle-loader {
+  border-radius: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
 }

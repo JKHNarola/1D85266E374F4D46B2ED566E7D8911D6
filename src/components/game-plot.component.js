@@ -1,5 +1,6 @@
 import React from 'react';
 import Block from './block.component';
+import ShufflingLoader from './shuffling-loader';
 
 export class GamePlot extends React.Component {
     constructor(props) {
@@ -7,17 +8,24 @@ export class GamePlot extends React.Component {
 
         this.state = {
             boxSize: (this.props.blockSize + (this.props.blockMargin * 2)) * this.props.matrixSize + "px",
-            animatespeed: 50,
-            shuffleAnimateSpeed: 50,
             gameMatrix: [],
             marginpix: this.props.blockMargin * 2,
-            shuffleMoves: this.props.matrixSize * 100,
-            blankBlockNo: -1
+            shuffleMoves: 600,
+            blankBlockNo: -1,
+            shuffleStatus: "unshuffled",
         };
+    }
+
+    getBlockSizeWithMargin = () => {
+        return this.props.blockSize + this.state.marginpix;
     }
 
     componentDidMount = () => {
         this.generateGameMatrix();
+
+        setTimeout(() => {
+            this.shuffle();
+        }, 1000);
     };
 
     generateGameMatrix = () => {
@@ -34,8 +42,8 @@ export class GamePlot extends React.Component {
                         width: this.props.blockSize + "px",
                         margin: this.props.blockMargin + "px",
                         lineHeight: this.props.blockSize + "px",
-                        left: (x - 1) * (this.props.blockSize + this.state.marginpix),
-                        top: (y - 1) * (this.props.blockSize + this.state.marginpix),
+                        left: (x - 1) * this.getBlockSizeWithMargin(),
+                        top: (y - 1) * this.getBlockSizeWithMargin(),
                         opacity: 1
                     }
                 });
@@ -63,7 +71,7 @@ export class GamePlot extends React.Component {
         let blankTop = parseInt(blankBlock.style.top.replace("px", ""));
         let blankLeft = parseInt(blankBlock.style.left.replace("px", ""));
 
-        let delta = this.props.blockSize + this.state.marginpix;
+        let delta = this.getBlockSizeWithMargin();
 
         let no = parseInt(e.target.innerHTML);
 
@@ -93,7 +101,7 @@ export class GamePlot extends React.Component {
     };
 
     moveBlock = (blockNo, move) => {
-        let movepix = this.props.blockSize + this.state.marginpix;
+        let movepix = this.getBlockSizeWithMargin();
         this.setState(prevState => ({
             gameMatrix: prevState.gameMatrix.map(arr =>
                 arr.map(ele =>
@@ -118,11 +126,41 @@ export class GamePlot extends React.Component {
         let bTop = parseInt(blankBlock.style.top.replace("px", ""));
         let bLeft = parseInt(blankBlock.style.left.replace("px", ""));
 
-        
+        let delta = this.getBlockSizeWithMargin();
+        let surBlocks = [];
+
+        //TODO: make this faster
+        this.state.gameMatrix.forEach(arr => {
+            arr.forEach(b => {
+                if (b.style.left === bLeft - delta && b.style.top === bTop) surBlocks.push({ no: b.no, move: "right", pos: "left" });
+                else if (b.style.left === bLeft + delta && b.style.top === bTop) surBlocks.push({ no: b.no, move: "left", pos: "right" });
+                else if (b.style.left === bLeft && b.style.top === bTop - delta) surBlocks.push({ no: b.no, move: "down", pos: "up" });
+                else if (b.style.left === bLeft && b.style.top === bTop + delta) surBlocks.push({ no: b.no, move: "up", pos: "down" });
+            });
+        });
+
+        let ranIndex = Math.floor(Math.random() * surBlocks.length);
+        this.moveBlock(surBlocks[ranIndex].no, surBlocks[ranIndex].move);
+        this.moveBlock(parseInt(blankBlock.innerHTML), surBlocks[ranIndex].pos);
+    };
+
+    shuffle = () => {
+        this.setState({ shuffleStatus: "shuffling" });
+        this.intervalCnt = 0;
+        this.shuffleInterval = setInterval(() => {
+            if (this.intervalCnt === this.state.shuffleMoves) {
+                clearInterval(this.shuffleInterval);
+                this.intervalCnt = 0;
+                this.setState({ shuffleStatus: "shuffled" });
+                return;
+            }
+            this.shuffleSingleBlock();
+            this.intervalCnt++;
+        }, 50);
     };
 
     render = () => {
-        return <div id="gameplot" className="game-plot" style={{ height: this.state.boxSize, width: this.state.boxSize }}>
+        return <div id="gameplot" className={"game-plot " + this.state.shuffleStatus} style={{ height: this.state.boxSize, width: this.state.boxSize }}>
             {
                 this.state.gameMatrix.map((arr, i) => {
                     return <React.Fragment key={i}>
@@ -133,6 +171,9 @@ export class GamePlot extends React.Component {
                         }
                     </ React.Fragment>
                 })
+            }
+            {
+                this.state.shuffleStatus === "shuffling" && <ShufflingLoader boxSize={this.state.boxSize} />
             }
         </div >;
     };
