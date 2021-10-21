@@ -20,7 +20,7 @@ class GameBoard extends React.Component {
             <>
                 <Title />
                 {this.state.status === "init" && <BrowseFile onFileSelected={this.onFileSelected} />}
-                {this.state.status === "game" && <GamePlot matrixSize={5} blockSize={50} blockMargin={1} />}
+                {this.state.status === "game" && <GamePlot matrixSize={6} blockSize={50} blockMargin={1} />}
             </>
         );
     }
