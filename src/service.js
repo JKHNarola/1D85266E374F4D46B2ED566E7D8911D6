@@ -29,3 +29,8 @@ export const hideLoaderRequestObservable = hideLoaderRequestSubject.asObservable
 export const hideLoaderRequest = () => {
     hideLoaderRequestSubject.next();
 };
+
+export const playMoveBlockSound = () => {
+    let audio = new Audio("/sounds/slide2.wav");
+    audio.play();
+};

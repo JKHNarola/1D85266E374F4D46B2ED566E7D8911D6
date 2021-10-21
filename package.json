@@ -21,6 +21,7 @@
     "react-scripts": "4.0.3",
     "react-transition-group": "^4.4.2",
     "rxjs": "^7.3.0",
+    "sound-play": "^1.1.0",
     "universal-cookie": "^4.0.4",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"

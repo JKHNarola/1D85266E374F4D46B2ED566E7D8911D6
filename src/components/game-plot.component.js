@@ -1,5 +1,7 @@
 import React from 'react';
+import { playMoveBlockSound } from '../service';
 import Block from './block.component';
+import MessageBox from './messagebox.component';
 import ShufflingLoader from './shuffling-loader';
 
 export class GamePlot extends React.Component {
@@ -9,8 +11,9 @@ export class GamePlot extends React.Component {
         this.state = {
             boxSize: (this.props.blockSize + (this.props.blockMargin * 2)) * this.props.matrixSize + "px",
             gameMatrix: [],
+            gameMatrixBack: [],
             marginpix: this.props.blockMargin * 2,
-            shuffleMoves: 600,
+            shuffleMoves: 1,
             blankBlockNo: -1,
             shuffleStatus: "unshuffled",
         };
@@ -51,8 +54,12 @@ export class GamePlot extends React.Component {
             gameMatrix.push(arr);
         }
         gameMatrix[this.props.matrixSize - 1][this.props.matrixSize - 1].isBlank = true;
-        this.setState({ gameMatrix: gameMatrix });
-        this.setState({ blankBlockNo: gameMatrix[this.props.matrixSize - 1][this.props.matrixSize - 1].no });
+        this.setState({
+            gameMatrix: gameMatrix,
+            blankBlockNo: gameMatrix[this.props.matrixSize - 1][this.props.matrixSize - 1].no,
+            gameMatrixBack: Object.assign([], gameMatrix),
+            shuffleStatus: "unshuffled"
+        });
     };
 
     getBlankBlock = () => {
@@ -100,7 +107,7 @@ export class GamePlot extends React.Component {
         }
     };
 
-    moveBlock = (blockNo, move) => {
+    moveBlock = (blockNo, move, isShuffle) => {
         let movepix = this.getBlockSizeWithMargin();
         this.setState(prevState => ({
             gameMatrix: prevState.gameMatrix.map(arr =>
@@ -118,7 +125,13 @@ export class GamePlot extends React.Component {
                         : ele
                 )
             )
-        }));
+        }), () => {
+            if (!isShuffle && this.state.blankBlockNo === blockNo && this.checkGameWon())
+                this.onGameWon();
+        });
+
+        if (!isShuffle)
+            playMoveBlockSound();
     }
 
     shuffleSingleBlock = () => {
@@ -140,8 +153,8 @@ export class GamePlot extends React.Component {
         });
 
         let ranIndex = Math.floor(Math.random() * surBlocks.length);
-        this.moveBlock(surBlocks[ranIndex].no, surBlocks[ranIndex].move);
-        this.moveBlock(parseInt(blankBlock.innerHTML), surBlocks[ranIndex].pos);
+        this.moveBlock(surBlocks[ranIndex].no, surBlocks[ranIndex].move, true);
+        this.moveBlock(parseInt(blankBlock.innerHTML), surBlocks[ranIndex].pos, true);
     };
 
     shuffle = () => {
@@ -157,6 +170,16 @@ export class GamePlot extends React.Component {
             this.shuffleSingleBlock();
             this.intervalCnt++;
         }, 50);
+    };
+
+    checkGameWon = () => {
+        return JSON.stringify(this.state.gameMatrix) === JSON.stringify(this.state.gameMatrixBack);
+    };
+
+    onGameWon = () => {
+        MessageBox.success("Won", "You won the game!!", true, () => {
+            this.generateGameMatrix();
+        });
     };
 
     render = () => {
