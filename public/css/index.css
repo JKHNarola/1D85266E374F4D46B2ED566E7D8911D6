@@ -73,8 +73,6 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 .block {
   float: left;
   border-radius: 3px;
-  /* background: url(sample-image.jpg) no-repeat left top;
-  background-position: 100px 25px; */
   background-color: #f18c8e;
   opacity: 0;
   position: absolute;
@@ -85,6 +83,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: inset 1px 1px 2px rgb(255 255 255 / 40%), 1px 1px 1px 2px rgba(0, 0, 0, 0.205);
 }
 
 .game-plot.shuffled .block {
@@ -131,5 +130,5 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   top: 0;
   left: 0;
   z-index: 100;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(5px);
 }

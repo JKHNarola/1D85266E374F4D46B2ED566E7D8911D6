@@ -8,15 +8,28 @@ export class GamePlot extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        let stateObj = {
             boxSize: (this.props.blockSize + (this.props.blockMargin * 2)) * this.props.matrixSize + "px",
             gameMatrix: [],
             gameMatrixBack: [],
             marginpix: this.props.blockMargin * 2,
-            shuffleMoves: 1,
+            shuffleMoves: 10,
             blankBlockNo: -1,
             shuffleStatus: "unshuffled",
+            blockFixedStyle: {
+                height: this.props.blockSize + "px",
+                width: this.props.blockSize + "px",
+                margin: this.props.blockMargin + "px",
+                lineHeight: this.props.blockSize + "px",
+                opacity: 1,
+                color: this.props.type !== "image" ? "black" : "transparent"
+            }
         };
+        if (this.props.type !== "number") {
+            stateObj.blockFixedStyle.backgroundImage = 'url("/sample-images/1.jpg")';
+            stateObj.blockFixedStyle.backgroundSize = ((this.props.blockSize + this.props.blockMargin * 2) * this.props.matrixSize) + (this.props.blockSize + this.props.blockMargin * 2) + "px";
+        }
+        this.state = stateObj;
     }
 
     getBlockSizeWithMargin = () => {
@@ -41,13 +54,9 @@ export class GamePlot extends React.Component {
                     no: no,
                     isBlank: false,
                     style: {
-                        height: this.props.blockSize + "px",
-                        width: this.props.blockSize + "px",
-                        margin: this.props.blockMargin + "px",
-                        lineHeight: this.props.blockSize + "px",
                         left: (x - 1) * this.getBlockSizeWithMargin(),
                         top: (y - 1) * this.getBlockSizeWithMargin(),
-                        opacity: 1
+                        backgroundPosition: this.props.type !== "number" ? ((x - 1) * 100 / this.props.matrixSize) + "% " + ((y - 1) * 100 / this.props.matrixSize) + "%" : "none"
                     }
                 });
             }
@@ -189,7 +198,7 @@ export class GamePlot extends React.Component {
                     return <React.Fragment key={i}>
                         {
                             arr.map((block, j) => {
-                                return <Block style={block.style} x={i} y={j} key={block.no} isBlank={block.isBlank} onClick={this.onBlockClick}>{block.no}</Block>
+                                return <Block style={{ ...this.state.blockFixedStyle, ...block.style }} x={i} y={j} key={block.no} isBlank={block.isBlank} onClick={this.onBlockClick}>{block.no}</Block>
                             })
                         }
                     </ React.Fragment>
