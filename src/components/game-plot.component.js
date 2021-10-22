@@ -26,7 +26,7 @@ export class GamePlot extends React.Component {
             }
         };
         if (this.props.type !== "number") {
-            stateObj.blockFixedStyle.backgroundImage = 'url("/sample-images/1.jpg")';
+            stateObj.blockFixedStyle.backgroundImage = this.props.image;
             stateObj.blockFixedStyle.backgroundSize = ((this.props.blockSize + this.props.blockMargin * 2) * this.props.matrixSize) + (this.props.blockSize + this.props.blockMargin * 2) + "px";
         }
         this.state = stateObj;
