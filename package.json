@@ -1,5 +1,5 @@
 {
-  "name": "react-app",
+  "name": "shuffle-game",
   "version": "0.1.0",
   "private": true,
   "main": "electron-main.js",
@@ -17,6 +17,7 @@
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-image-crop": "^9.0.4",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-transition-group": "^4.4.2",
@@ -38,8 +39,8 @@
     "dist": "electron-builder"
   },
   "build": {
-    "productName": "electronreact",
-    "appId": "com.jkh.electronreact",
+    "productName": "shuffle-game",
+    "appId": "com.electronreact.shufflegame",
     "extends": null,
     "files": [
       "build/**/*",

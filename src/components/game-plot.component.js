@@ -13,7 +13,7 @@ export class GamePlot extends React.Component {
             gameMatrix: [],
             gameMatrixBack: [],
             marginpix: this.props.blockMargin * 2,
-            shuffleMoves: 10,
+            shuffleMoves: 100,
             blankBlockNo: -1,
             shuffleStatus: "unshuffled",
             blockFixedStyle: {
