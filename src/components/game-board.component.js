@@ -1,6 +1,8 @@
 import React from 'react';
 import BrowseAndCropImage from "./browse-file.component.js";
 import GamePlot from "./game-plot.component.js";
+import GameTypeSelector from './gametype-selector.component.js';
+import MatrixSizeSelector from './matrix-size-selector.component.js';
 import Title from './title.component.js';
 
 class GameBoard extends React.Component {
@@ -27,8 +29,27 @@ class GameBoard extends React.Component {
         return (
             <>
                 <Title />
-                {this.state.status === "init" && <BrowseAndCropImage onImageSelected={this.onImageSelected} />}
-                {this.state.status === "game" && <GamePlot matrixSize={this.state.matrixSize} blockSize={this.state.blockSize} blockMargin={this.state.blockMargin} image={this.state.image} type={this.state.gameType} />}
+                {
+                    this.state.status === "init" &&
+                    <>
+                        <MatrixSizeSelector
+                            default={this.state.matrixSize}
+                            onChange={(e) => { this.setState({ matrixSize: e }); }} />
+                        <GameTypeSelector
+                            default={this.state.gameType}
+                            onChange={(e) => { this.setState({ gameType: e }); }} />
+                        <BrowseAndCropImage onImageSelected={this.onImageSelected} />
+                    </>
+                }
+                {
+                    this.state.status === "game" &&
+                    <GamePlot
+                        matrixSize={this.state.matrixSize}
+                        blockSize={this.state.blockSize}
+                        blockMargin={this.state.blockMargin}
+                        image={this.state.image}
+                        type={this.state.gameType} />
+                }
             </>
         );
     }

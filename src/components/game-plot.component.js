@@ -32,16 +32,20 @@ export class GamePlot extends React.Component {
         this.state = stateObj;
     }
 
-    getBlockSizeWithMargin = () => {
-        return this.props.blockSize + this.state.marginpix;
-    }
-
     componentDidMount = () => {
         this.generateGameMatrix();
 
         setTimeout(() => {
             this.shuffle();
         }, 1000);
+    };
+
+    componentWillUnmount = () => {
+        if (this.props.image) URL.revokeObjectURL(this.props.image);
+    };
+
+    getBlockSizeWithMargin = () => {
+        return this.props.blockSize + this.state.marginpix;
     };
 
     generateGameMatrix = () => {
@@ -73,7 +77,7 @@ export class GamePlot extends React.Component {
 
     getBlankBlock = () => {
         return Array.from(document.getElementsByClassName("blank"))[0];
-    }
+    };
 
     onBlockClick = (e) => {
         let isBlank = e.target.getAttribute('data-isblank') === "true";
@@ -141,7 +145,7 @@ export class GamePlot extends React.Component {
 
         if (!isShuffle)
             playMoveBlockSound();
-    }
+    };
 
     shuffleSingleBlock = () => {
         let blankBlock = this.getBlankBlock();

@@ -132,3 +132,136 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   z-index: 100;
   backdrop-filter: blur(5px);
 }
+
+.matrix-size {
+  float: left;
+  margin: 5px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 2px solid #f1d1b5;
+  color: #f1d1b5;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.matrix-size:hover {
+  background-color: #f1d1b54b;
+}
+
+.matrix-size.active {
+  background-color: #f1d1b557;
+  box-shadow: 2px 2px 15px #ffffff8f;
+  border-color: white;
+  color: white;
+}
+
+.custom-radio {
+  float: left;
+  /* border: 1px solid #f1d1b5; */
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.custom-radio .container {
+  display: block;
+  position: relative;
+  padding-left: 32px;
+  padding-right: 0px;
+  padding-top: 2px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  margin: 5px;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-weight: 600;
+  color: #f1d1b5;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.custom-radio .container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #f1d1b57a;
+  border-radius: 50%;
+  transition: all 0.5s;
+}
+
+.custom-radio .container:hover input~.checkmark {
+  background-color: #f1d1b57a;
+}
+
+.custom-radio .container input:checked~.checkmark {
+  background-color: #f1d1b5;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-radio .container input:checked~.checkmark:after {
+  display: block;
+}
+
+.custom-radio .container .checkmark:after {
+  top: 5px;
+  left: 5px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #f1d1b5;
+  box-shadow: 0px 0px 5px 5px #ffffff;
+  transition: all 0.5s;
+}
+
+.default-image-selector {
+  height: 200px;
+  width: 100%;
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
+  padding: 30px 10px;
+  flex-wrap: nowrap;
+}
+
+.default-image-selector .image {
+  float: left;
+  margin: 5px;
+  padding: 5px;
+  border: 2px solid #568ea6;
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.default-image-selector .image:hover {
+  border: 2px solid white;
+}
+
+.default-image-selector .image.active {
+  border: 2px solid #ffffff;
+  background-color: #f1d1b556;
+  box-shadow: 0px 0px 10px 3px #f1d1b57e;
+}
+
+.default-image-selector .image img {
+  height: 100px;
+  width: 100px;
+}
