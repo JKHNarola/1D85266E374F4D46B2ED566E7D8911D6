@@ -234,7 +234,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   height: 200px;
   width: 100%;
   white-space: nowrap;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   display: flex;
   padding: 30px 10px;
@@ -248,20 +248,37 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   border: 2px solid #568ea6;
   flex: 0 0 auto;
   cursor: pointer;
-  transition: all 0.5s;
+  height: 114px;
+  width: 114px;
+  transition: all 0.2s;
 }
 
 .default-image-selector .image:hover {
   border: 2px solid white;
+  height: 124px;
+  width: 124px;
+}
+
+.default-image-selector .image:hover img {
+  height: 110px;
+  width: 110px;
 }
 
 .default-image-selector .image.active {
   border: 2px solid #ffffff;
   background-color: #f1d1b556;
   box-shadow: 0px 0px 10px 3px #f1d1b57e;
+  height: 124px;
+  width: 124px;
+}
+
+.default-image-selector .image.active img {
+  height: 110px;
+  width: 110px;
 }
 
 .default-image-selector .image img {
   height: 100px;
   width: 100px;
+  transition: all 0.2s;
 }
