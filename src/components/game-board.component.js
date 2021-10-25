@@ -2,6 +2,8 @@ import React from 'react';
 import GamePlot from "./game-plot.component.js";
 import GameTypeSelector from './gametype-selector.component.js';
 import MatrixSizeSelector from './matrix-size-selector.component.js';
+import Moves from './moves.component.js';
+import Timer from './timer.component.js';
 import Title from './title.component.js';
 
 class GameBoard extends React.Component {
@@ -16,7 +18,9 @@ class GameBoard extends React.Component {
             blockMargin: blockMargin,
             matrixSize: matrixSize,
             blockSize: Math.floor((boxSize - (blockMargin * 2 * matrixSize)) / matrixSize),
-            image: null
+            image: null,
+            isGameStarted: false,
+            moves: 0,
         };
     }
 
@@ -32,6 +36,18 @@ class GameBoard extends React.Component {
 
     onStartGame = () => {
         this.setState({ status: "game" });
+    };
+
+    onGameStarted = () => {
+        this.setState({ isGameStarted: true });
+    };
+
+    onGameFinished = () => {
+        this.setState({ isGameStarted: false });
+    };
+
+    onMoveBlock = () => {
+        this.setState(prev => ({ moves: prev.moves + 1 }));
     };
 
     render = () => {
@@ -53,12 +69,20 @@ class GameBoard extends React.Component {
                 }
                 {
                     this.state.status === "game" &&
-                    <GamePlot
-                        matrixSize={this.state.matrixSize}
-                        blockSize={this.state.blockSize}
-                        blockMargin={this.state.blockMargin}
-                        image={this.state.image}
-                        type={this.state.gameType} />
+                    <>
+                        <Timer isStart={this.state.isGameStarted} />
+                        <GamePlot
+                            matrixSize={this.state.matrixSize}
+                            blockSize={this.state.blockSize}
+                            blockMargin={this.state.blockMargin}
+                            shuffleMoves={3}
+                            image={this.state.image}
+                            type={this.state.gameType}
+                            onMove={this.onMoveBlock}
+                            onGameStarted={this.onGameStarted}
+                            onGameFinished={this.onGameFinished} />
+                        <Moves count={this.state.moves} />
+                    </>
                 }
             </>
         );

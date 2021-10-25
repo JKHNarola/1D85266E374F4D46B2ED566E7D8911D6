@@ -88,7 +88,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
 }
 
 .game-plot.shuffled .block {
-  transition: all 100ms;
+  transition: all 100ms ease;
 }
 
 .blank {
@@ -352,4 +352,21 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   background-color: #f18c8e;
   border-color: #f18c8e;
   cursor: no-drop;
+}
+
+.timer {
+  height: 80px;
+  font-size: 26px;
+  color: #f0b7a4;
+  padding: 20px 40px;
+  font-weight: 600;
+  text-shadow: 0 0 5px #f0b7a47a;
+}
+
+.moves {
+  height: 80px;
+  font-size: 20px;
+  color: white;
+  padding: 20px 40px;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.699);
 }

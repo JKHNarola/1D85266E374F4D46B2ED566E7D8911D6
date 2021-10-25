@@ -13,7 +13,7 @@ export class GamePlot extends React.Component {
             gameMatrix: [],
             gameMatrixBack: [],
             marginpix: this.props.blockMargin * 2,
-            shuffleMoves: 100,
+            shuffleMoves: this.props.shuffleMoves,
             blankBlockNo: -1,
             shuffleStatus: "unshuffled",
             blockFixedStyle: {
@@ -23,7 +23,8 @@ export class GamePlot extends React.Component {
                 lineHeight: this.props.blockSize + "px",
                 opacity: 1,
                 color: this.props.type !== "image" ? "black" : "transparent"
-            }
+            },
+            isGameFinished: false
         };
         if (this.props.type !== "number") {
             stateObj.blockFixedStyle.backgroundImage = this.props.image;
@@ -71,7 +72,8 @@ export class GamePlot extends React.Component {
             gameMatrix: gameMatrix,
             blankBlockNo: gameMatrix[this.props.matrixSize - 1][this.props.matrixSize - 1].no,
             gameMatrixBack: Object.assign([], gameMatrix),
-            shuffleStatus: "unshuffled"
+            shuffleStatus: "unshuffled",
+            isGameFinished: false
         });
     };
 
@@ -80,6 +82,8 @@ export class GamePlot extends React.Component {
     };
 
     onBlockClick = (e) => {
+        if (this.state.isGameFinished) return;
+
         let isBlank = e.target.getAttribute('data-isblank') === "true";
         if (isBlank) return;
 
@@ -99,24 +103,28 @@ export class GamePlot extends React.Component {
         if (blankTop - delta === top && blankLeft === left) {
             this.moveBlock(no, "down");
             this.moveBlock(this.state.blankBlockNo, "up");
+            if (this.props.onMove) this.props.onMove();
         }
 
         //Move right
         else if (blankTop === top && blankLeft - delta === left) {
             this.moveBlock(no, "right");
             this.moveBlock(this.state.blankBlockNo, "left");
+            if (this.props.onMove) this.props.onMove();
         }
 
         //Move up
         else if (blankTop + delta === top && blankLeft === left) {
             this.moveBlock(no, "up");
             this.moveBlock(this.state.blankBlockNo, "down");
+            if (this.props.onMove) this.props.onMove();
         }
 
         //Move left
         else if (blankTop === top && blankLeft + delta === left) {
             this.moveBlock(no, "left");
             this.moveBlock(this.state.blankBlockNo, "right");
+            if (this.props.onMove) this.props.onMove();
         }
     };
 
@@ -178,6 +186,7 @@ export class GamePlot extends React.Component {
                 clearInterval(this.shuffleInterval);
                 this.intervalCnt = 0;
                 this.setState({ shuffleStatus: "shuffled" });
+                if (this.props.onGameStarted) this.props.onGameStarted();
                 return;
             }
             this.shuffleSingleBlock();
@@ -190,9 +199,9 @@ export class GamePlot extends React.Component {
     };
 
     onGameWon = () => {
-        MessageBox.success("Won", "You won the game!!", true, () => {
-            this.generateGameMatrix();
-        });
+        if (this.props.onGameFinished) this.props.onGameFinished();
+        this.setState({ isGameFinished: true });
+        MessageBox.success("Won", "You won the game!!", true);
     };
 
     render = () => {
