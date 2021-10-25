@@ -1,5 +1,5 @@
 import React from 'react';
-import DefaultImageSelector from './default-image-selector';
+import ImageSelector from './image-selector';
 
 export class GameTypeSelector extends React.Component {
     constructor(props) {
@@ -32,7 +32,7 @@ export class GameTypeSelector extends React.Component {
             </div>
         </div>;
 
-        const imageSelector = this.state.value === "image" && <DefaultImageSelector />;
+        const imageSelector = this.state.value === "image" && <ImageSelector onSelectImage={this.props.onImageSelect} />;
 
         return <div className="game-types-selector">
             {types}

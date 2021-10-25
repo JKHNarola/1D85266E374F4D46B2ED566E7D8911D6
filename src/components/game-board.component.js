@@ -1,5 +1,4 @@
 import React from 'react';
-import BrowseAndCropImage from "./browse-file.component.js";
 import GamePlot from "./game-plot.component.js";
 import GameTypeSelector from './gametype-selector.component.js';
 import MatrixSizeSelector from './matrix-size-selector.component.js';
@@ -12,7 +11,7 @@ class GameBoard extends React.Component {
         let boxSize = 300, blockMargin = 1, matrixSize = 5;
         this.state = {
             status: "init", //init, game, done
-            gameType: "image", //image, number, imageWithNumber
+            gameType: "image", //image, number
             boxSize: boxSize,
             blockMargin: blockMargin,
             matrixSize: matrixSize,
@@ -21,8 +20,18 @@ class GameBoard extends React.Component {
         };
     }
 
-    onImageSelected = (fileUrl) => {
-        this.setState({ status: "game", image: 'url("' + fileUrl + '")' });
+    onImageSelect = (image) => {
+        if (this.state.gameType === "image")
+            this.setState({ image: image });
+    };
+
+    onGameTypeChange = (type) => {
+        if (type === "number") this.setState({ image: null });
+        this.setState({ gameType: type });
+    };
+
+    onStartGame = () => {
+        this.setState({ status: "game" });
     };
 
     render = () => {
@@ -37,8 +46,9 @@ class GameBoard extends React.Component {
                             onChange={(e) => { this.setState({ matrixSize: e }); }} />
                         <GameTypeSelector
                             default={this.state.gameType}
-                            onChange={(e) => { this.setState({ gameType: e }); }} />
-                        <BrowseAndCropImage onImageSelected={this.onImageSelected} />
+                            onChange={this.onGameTypeChange}
+                            onImageSelect={this.onImageSelect} />
+                        <button disabled={this.state.gameType === "image" && this.state.image === null} type="button" className="btn btn-primary" onClick={this.onStartGame}>Start</button>
                     </>
                 }
                 {

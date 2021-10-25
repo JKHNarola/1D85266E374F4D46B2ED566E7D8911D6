@@ -1,19 +1,12 @@
 import React from 'react';
 import MessageBox from './messagebox.component';
-import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
-export class BrowseAndCropImage extends React.Component {
+export class BrowseImage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            imgSrc: null,
-            crop: {
-                unit: 'px',
-                width: 300,
-                height: 300,
-                aspect: 1 / 1,
-            }
+            imgBase64: null
         }
         this.inputRef = React.createRef();
     }
@@ -33,83 +26,39 @@ export class BrowseAndCropImage extends React.Component {
         const ext = name.substring(lastDot + 1);
 
         if (['jpg', 'jpeg'].indexOf(ext.toLowerCase()) < 0) {
-            MessageBox.error("File not allowed", "Only .jpeg or .jpg file is allowed.");
+            MessageBox.error("File not allowed", "Only .jpeg or .jpg image file is allowed.");
             return;
         }
 
         const reader = new FileReader();
-        reader.addEventListener('load', () => this.setState({ imgSrc: reader.result }));
+        reader.addEventListener('load', () => {
+            const img = new Image();
+            img.onload = () => {
+                if (img.width < 300 || img.height < 300) {
+                    MessageBox.error("File size invalid", "Image size must be greater than or equal to 300 x 300 pixels.");
+                    return;
+                }
+
+                this.setState({ imgBase64: reader.result });
+                if (img.width !== img.height)
+                    this.props.onImageSelected({ image: reader.result, isCropNeeded: true });
+                else
+                    this.props.onImageSelected({ image: reader.result, isCropNeeded: false });
+            }
+            img.src = reader.result;
+        });
         reader.readAsDataURL(file);
     };
 
-    onImageLoaded = (image) => {
-        this.imageRef = image;
-    };
-
-    onCropChange = crop => {
-        this.setState({ crop });
-    };
-
-    onCropComplete = (crop) => {
-        if (this.imageRef && crop.width && crop.height)
-            this.imageBase64 = this.getCroppedImg(this.imageRef, crop);
-    };
-
-    getCroppedImg = (image, crop) => {
-        const canvas = document.createElement('canvas');
-        const pixelRatio = window.devicePixelRatio;
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = crop.width * pixelRatio * scaleX;
-        canvas.height = crop.height * pixelRatio * scaleY;
-
-        ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-        ctx.imageSmoothingQuality = 'high';
-
-        ctx.drawImage(
-            image,
-            crop.x * scaleX,
-            crop.y * scaleY,
-            crop.width * scaleX,
-            crop.height * scaleY,
-            0,
-            0,
-            crop.width * scaleX,
-            crop.height * scaleY
-        );
-
-        return new Promise((resolve, reject) => {
-            canvas.toBlob(
-                (blob) => {
-                    if (!blob) {
-                        reject(new Error('Canvas is empty'));
-                        return;
-                    }
-                    window.URL.revokeObjectURL(this.fileUrl);
-                    this.fileUrl = window.URL.createObjectURL(blob);
-                    resolve(this.fileUrl);
-                },
-                'image/jpeg',
-                1
-            );
-        });
-    }
-
-    onOK = () => {
-        if (this.fileUrl) this.props.onImageSelected(this.fileUrl);
-    };
-
-    onCancel = () => {
-        this.setState({ imgSrc: null });
-        if (this.fileUrl) window.URL.createObjectURL(this.fileUrl);
+    onRemove = () => {
+        this.setState({ imgBase64: null });
+        this.props.onRemove();
     };
 
     render = () => {
         return <>
             {
-                !this.state.imgSrc &&
+                !this.state.imgBase64 &&
                 <div className="browse-file" onClick={this.onBrowseClick}>
                     <input disabled={this.props.disabled} accept=".jpg, .jpeg" ref={this.inputRef} style={{ display: "none" }} className="form-control" type="file" onChange={this.onFileChange} />
                     <i className="zmdi zmdi-image-o" style={{ fontSize: '35px' }}></i>
@@ -117,25 +66,12 @@ export class BrowseAndCropImage extends React.Component {
                 </div>
             }
             {
-                this.state.imgSrc &&
-                <ReactCrop
-                    src={this.state.imgSrc}
-                    crop={this.state.crop}
-                    onChange={this.onCropChange}
-                    onComplete={this.onCropComplete}
-                    onImageLoaded={this.onImageLoaded} />
-            }
-            {
-                this.state.imgSrc &&
-                <div className="row">
-                    <div className="col-sm-12">
-                        <button type="button" className="btn btn-danger btn-sm" onClick={this.onCancel}>Cancel</button>&nbsp;
-                        <button type="button" className="btn btn-primary btn-sm" onClick={this.onOK}>Ok</button>
-                    </div>
+                this.state.imgBase64 && <div className="remove-browse-file" onClick={this.onRemove}>
+                    <i className="zmdi zmdi-close"></i>
                 </div>
             }
         </>;
     };
 }
 
-export default BrowseAndCropImage;
+export default BrowseImage;
