@@ -36,6 +36,11 @@ export class GamePlot extends React.Component {
     componentDidMount = () => {
         this.generateGameMatrix();
 
+
+        setTimeout(() => {
+            document.getElementById("gameplot").style.opacity = 1;
+        }, 200);
+
         setTimeout(() => {
             this.shuffle();
         }, 1000);
@@ -218,7 +223,8 @@ export class GamePlot extends React.Component {
                 })
             }
             {
-                this.state.shuffleStatus === "shuffling" && <ShufflingLoader boxSize={this.state.boxSize} />
+                this.state.shuffleStatus === "shuffling" &&
+                <ShufflingLoader boxSize={this.state.boxSize} />
             }
         </div >;
     };

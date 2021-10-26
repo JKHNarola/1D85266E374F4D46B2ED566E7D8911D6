@@ -75,7 +75,7 @@ class GameBoard extends React.Component {
                             matrixSize={this.state.matrixSize}
                             blockSize={this.state.blockSize}
                             blockMargin={this.state.blockMargin}
-                            shuffleMoves={3}
+                            shuffleMoves={20}
                             image={this.state.image}
                             type={this.state.gameType}
                             onMove={this.onMoveBlock}

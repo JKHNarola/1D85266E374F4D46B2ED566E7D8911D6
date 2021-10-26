@@ -21,8 +21,8 @@ let loadMainWindow = () => {
         }
     });
 
-    // if (process.env.ELECTRON_START_URL)
-    //     mainwin.webContents.openDevTools();
+    if (process.env.ELECTRON_START_URL)
+        mainwin.webContents.openDevTools();
 
     let startUrl = process.env.ELECTRON_START_URL.trim() ?
         process.env.ELECTRON_START_URL.trim()
