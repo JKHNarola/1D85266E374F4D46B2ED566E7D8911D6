@@ -360,7 +360,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   color: #f0b7a4;
   padding: 20px 40px;
   font-weight: 600;
-  text-shadow: 0 0 5px #f0b7a47a;
+  text-shadow: 0 0 5px rgba(240, 183, 164, 0.50);
 }
 
 .moves {
@@ -368,5 +368,5 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   font-size: 20px;
   color: white;
   padding: 20px 40px;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.699);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.50);
 }
