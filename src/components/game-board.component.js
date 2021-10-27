@@ -43,7 +43,7 @@ class GameBoard extends React.Component {
     };
 
     onGameFinished = () => {
-        this.setState({ isGameStarted: false });
+        this.setState({ isGameStarted: false, status: "done" });
     };
 
     onMoveBlock = () => {
@@ -64,7 +64,11 @@ class GameBoard extends React.Component {
                             default={this.state.gameType}
                             onChange={this.onGameTypeChange}
                             onImageSelect={this.onImageSelect} />
-                        <button disabled={this.state.gameType === "image" && this.state.image === null} type="button" className="btn btn-primary" onClick={this.onStartGame}>Start</button>
+                        <div className="row mt-3">
+                            <div className="col-sm-12">
+                                <button disabled={this.state.gameType === "image" && this.state.image === null} type="button" className="btn btn-primary" onClick={this.onStartGame}>Start</button>
+                            </div>
+                        </div>
                     </>
                 }
                 {
@@ -75,7 +79,7 @@ class GameBoard extends React.Component {
                             matrixSize={this.state.matrixSize}
                             blockSize={this.state.blockSize}
                             blockMargin={this.state.blockMargin}
-                            shuffleMoves={20}
+                            shuffleMoves={this.state.matrixSize * 50}
                             image={this.state.image}
                             type={this.state.gameType}
                             onMove={this.onMoveBlock}

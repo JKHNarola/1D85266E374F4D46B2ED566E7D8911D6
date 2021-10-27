@@ -7,7 +7,7 @@ export class ImageSelector extends React.Component {
         super(props);
         this.state = {
             selected: null,
-            noOfSamples: 3,
+            noOfSamples: 9,
             isCrop: false,
             imageForCrop: null,
             customImage: null

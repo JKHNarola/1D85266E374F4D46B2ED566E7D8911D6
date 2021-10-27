@@ -30,7 +30,8 @@ export const hideLoaderRequest = () => {
     hideLoaderRequestSubject.next();
 };
 
+const slideAudio = new Audio("sounds/slide.wav");
 export const playMoveBlockSound = () => {
-    let audio = new Audio("/sounds/slide2.wav");
-    audio.play();
+    slideAudio.currentTime = 0;
+    slideAudio.play();
 };

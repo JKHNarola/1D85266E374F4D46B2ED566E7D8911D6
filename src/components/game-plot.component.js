@@ -188,6 +188,10 @@ export class GamePlot extends React.Component {
         this.intervalCnt = 0;
         this.shuffleInterval = setInterval(() => {
             if (this.intervalCnt === this.state.shuffleMoves) {
+                if (this.checkGameWon()) {
+                    this.intervalCnt = 0;
+                    return;
+                }
                 clearInterval(this.shuffleInterval);
                 this.intervalCnt = 0;
                 this.setState({ shuffleStatus: "shuffled" });

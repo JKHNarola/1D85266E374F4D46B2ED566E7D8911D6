@@ -6,7 +6,8 @@ export class BrowseImage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            imgBase64: null
+            imgBase64: null,
+            allowedExts: ['jpg', 'jpeg']
         }
         this.inputRef = React.createRef();
     }
@@ -25,7 +26,7 @@ export class BrowseImage extends React.Component {
         const lastDot = name.lastIndexOf('.');
         const ext = name.substring(lastDot + 1);
 
-        if (['jpg', 'jpeg'].indexOf(ext.toLowerCase()) < 0) {
+        if (this.state.allowedExts.indexOf(ext.toLowerCase()) < 0) {
             MessageBox.error("File not allowed", "Only .jpeg or .jpg image file is allowed.");
             return;
         }
